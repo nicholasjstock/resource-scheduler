@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { ResourceScheduler, type EventMove, type EventResize, type SlotClick } from '../src/index'
-import { colors, demoColumns, demoShifts, demoWeekStart, ShiftCard, type Shift } from './scene'
+import { BookingCard, colors, demoBookings, demoColumns, demoWeekStart, type Booking } from './scene'
 
 type Theme = 'light' | 'dark' | 'auto'
 
@@ -13,41 +13,41 @@ const overlaps = (a: { start: Date; end: Date }, b: { start: Date; end: Date }) 
 export function App() {
   const weekStart = useMemo(() => demoWeekStart(), [])
   const columns = useMemo(() => demoColumns(weekStart, 5), [weekStart])
-  const [shifts, setShifts] = useState<Shift[]>(() => demoShifts(weekStart))
+  const [bookings, setBookings] = useState<Booking[]>(() => demoBookings(weekStart))
   const [theme, setTheme] = useState<Theme>('light')
-  const [log, setLog] = useState<string[]>(['Drag a shift to move it or give it to someone else.'])
+  const [log, setLog] = useState<string[]>(['Drag a booking to move it to another time or room.'])
 
   const note = (line: string) => setLog((lines) => [line, ...lines].slice(0, 5))
 
-  const onEventMove = async ({ event, start, end, toColumn }: EventMove<Shift, { person: string }>) => {
-    const person = toColumn?.data?.person ?? event.person
-    const onLeave = shifts.some(
-      (other) => other.person === person && other.editable === false && overlaps(other, { start, end })
+  const onEventMove = async ({ event, start, end, toColumn }: EventMove<Booking, { room: string }>) => {
+    const room = toColumn?.data?.room ?? event.room
+    const blocked = bookings.some(
+      (other) => other.room === room && other.editable === false && overlaps(other, { start, end })
     )
     await save()
-    if (onLeave) {
-      note(`Rejected: ${person} is on leave then — the shift snaps back.`)
-      throw new Error('on leave')
+    if (blocked) {
+      note(`Rejected: ${room} is closed for maintenance then — the booking snaps back.`)
+      throw new Error('room unavailable')
     }
-    setShifts((all) => all.map((s) => (s.id === event.id ? { ...s, person, start, end } : s)))
-    note(`Moved “${event.title}” to ${person}.`)
+    setBookings((all) => all.map((b) => (b.id === event.id ? { ...b, room, start, end } : b)))
+    note(`Moved “${event.title}” to ${room}.`)
   }
 
-  const onEventResize = async ({ event, end }: EventResize<Shift>) => {
+  const onEventResize = async ({ event, end }: EventResize<Booking>) => {
     await save()
-    setShifts((all) => all.map((s) => (s.id === event.id ? { ...s, end } : s)))
+    setBookings((all) => all.map((b) => (b.id === event.id ? { ...b, end } : b)))
     note(`Resized “${event.title}”.`)
   }
 
-  const onSlotClick = ({ start, column }: SlotClick<Shift, { person: string }>) => {
-    const person = column.data?.person
-    if (!person) return
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000)
-    setShifts((all) => [
+  const onSlotClick = ({ start, column }: SlotClick<Booking, { room: string }>) => {
+    const room = column.data?.room
+    if (!room) return
+    const end = new Date(start.getTime() + 60 * 60 * 1000)
+    setBookings((all) => [
       ...all,
-      { id: String(Date.now()), person, title: 'New shift', start, end, color: colors.floor },
+      { id: String(Date.now()), room, title: 'New booking', start, end, color: colors.meeting },
     ])
-    note(`Added a shift for ${person}.`)
+    note(`Booked ${room}.`)
   }
 
   return (
@@ -56,8 +56,9 @@ export function App() {
         <div>
           <h1>resource-scheduler</h1>
           <p>
-            A React time grid with a column per resource. Drag to move or reassign, drag the bottom
-            edge to resize, click an empty slot to add a shift.
+            A React time grid with a column per resource — here, meeting rooms. Drag a booking to
+            move it or change room, drag its bottom edge to resize, click an empty slot to book. Grey
+            maintenance blocks are locked, and moves onto them are rejected.
           </p>
         </div>
         <label>
@@ -74,13 +75,13 @@ export function App() {
         <ResourceScheduler
           theme={theme}
           columns={columns}
-          events={shifts}
+          events={bookings}
           columnWidth={120}
           slotHeight={22}
           timeAxis={{ startHour: 7, endHour: 19, slotMinutes: 30 }}
           scrollToDate={weekStart}
           corner={<span className="demo-corner">This week</span>}
-          renderEvent={(shift, ctx) => <ShiftCard shift={shift} ctx={ctx} />}
+          renderEvent={(booking, ctx) => <BookingCard booking={booking} ctx={ctx} />}
           onEventMove={onEventMove}
           onEventResize={onEventResize}
           onSlotClick={onSlotClick}

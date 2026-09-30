@@ -6,13 +6,14 @@ and drop to move, reassign and resize them.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png">
-  <img alt="Resource scheduler: three days, each split into a column per person, with shifts placed by time, overlapping shifts side by side and a locked leave entry" src="docs/screenshot-light.png">
+  <img alt="Resource scheduler: three days, each split into a column per meeting room (Board, Studio, Huddle), with bookings placed by time, overlapping bookings side by side and a locked maintenance block" src="docs/screenshot-light.png">
 </picture>
 
 > Status: extracted from simple-retail-planner; not yet published to npm.
 
-**Live demo:** https://nicholasjstock.github.io/resource-scheduler/ — drag shifts between people,
-resize them, add one by clicking an empty slot, and switch between light and dark. The source is in
+**Live demo:** https://nicholasjstock.github.io/resource-scheduler/ — a week of meeting-room
+bookings: drag them between times and rooms, resize them, book a room by clicking an empty slot, and
+switch between light and dark. Moves onto a room's locked maintenance block are rejected and roll back. The source is in
 [`demo/`](demo/); run it locally with `npm run demo`.
 
 ## Usage
