@@ -362,14 +362,11 @@
   z-index: 2;
 }
 
-.rs-event-layer > *,
-.rs-collision-group {
-  pointer-events: auto;
-}
-
 .rs-collision-group {
   width: 100%;
   height: 100%;
+  /* Full-column overlay: let clicks reach the slots underneath; only the cards take them. */
+  pointer-events: none;
 }
 
 .rs-slot {
@@ -408,6 +405,7 @@
 /* Events */
 .rs-event {
   position: absolute;
+  pointer-events: auto;
   background-color: var(--rs-event-bg);
   color: var(--rs-event-fg);
   border: 1px solid var(--rs-event-border);

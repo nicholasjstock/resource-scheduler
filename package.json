@@ -31,7 +31,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --browser.headless",
     "test:watch": "vitest --browser.headless",
-    "screenshot": "vitest run --config vitest.screenshot.config.ts"
+    "screenshot": "vitest run --config vitest.screenshot.config.ts",
+    "demo": "vite --config vite.demo.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts"
   },
   "peerDependencies": {
     "react": ">=18",

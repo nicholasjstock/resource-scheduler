@@ -319,8 +319,9 @@ export function DragProvider<T extends CalendarEvent>({
       if (typeof onEventDrop === 'function') {
         try {
           await onEventDrop(droppedEvent, newStart, newEnd, targetColumn, fromColumn)
-        } catch (error) {
-          console.error('Error in onEventDrop:', error)
+        } catch {
+          // A rejected onEventMove is the documented way to refuse a move: the
+          // event rolls back when the optimistic state is cleared below.
         }
         setOptimisticEvent(null)
         setOptimisticColumnId(null)

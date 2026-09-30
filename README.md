@@ -11,6 +11,10 @@ and drop to move, reassign and resize them.
 
 > Status: extracted from simple-retail-planner; not yet published to npm.
 
+**Live demo:** https://nicholasjstock.github.io/resource-scheduler/ — drag shifts between people,
+resize them, add one by clicking an empty slot, and switch between light and dark. The source is in
+[`demo/`](demo/); run it locally with `npm run demo`.
+
 ## Usage
 
 ```tsx
@@ -68,6 +72,8 @@ npm test          # Vitest browser mode (Playwright/Chromium)
 npm run typecheck
 npm run build     # tsup → dist/ (ESM + .d.ts + index.css)
 npm run screenshot  # regenerate docs/screenshot-{light,dark}.png (scripts/readme-screenshot.test.tsx)
+npm run demo        # live demo dev server (demo/)
+npm run build:demo  # static demo site → demo-dist/ (deployed to GitHub Pages by .github/workflows/pages.yml)
 ```
 
 ## Licence

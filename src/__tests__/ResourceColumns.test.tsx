@@ -103,6 +103,53 @@ describe('resource columns', () => {
     expect(move.end.getHours()).toBe(12)
   })
 
+  it('lets empty slots be clicked in a column that also has events', async () => {
+    const onSlotClick = vi.fn()
+    await render(
+      <div style={{ height: '800px', width: '1200px' }}>
+        <ResourceScheduler {...baseProps} onSlotClick={onSlotClick} />
+      </div>
+    )
+
+    // Alice has a 09:00–11:00 booking; 13:00 is free.
+    const alice = document.querySelector<HTMLElement>('[data-column-id="monday-alice"]')!
+    const slots = alice.querySelectorAll<HTMLElement>('[data-testid^="time-slot-monday-alice-"]')
+    await userEvent.click(slots[8], { timeout: 2000 })
+
+    expect(onSlotClick).toHaveBeenCalledOnce()
+    const [slot] = onSlotClick.mock.calls[0]
+    expect(slot.start.getHours()).toBe(13)
+  })
+
+  it('rolls back a rejected move without logging an error', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const onEventMove = vi.fn(() => Promise.reject(new Error('not allowed')))
+    const page = await render(
+      <div style={{ height: '800px', width: '1200px' }}>
+        <ResourceScheduler {...baseProps} onEventMove={onEventMove} />
+      </div>
+    )
+
+    const card = (await page.getByTestId('event-card-b1').element()) as HTMLElement
+    const bob = document.querySelector<HTMLElement>('[data-column-id="monday-bob"]')!
+    const rect = card.getBoundingClientRect()
+    const target = bob.getBoundingClientRect()
+
+    card.dispatchEvent(pointer('pointerdown', rect.left + 5, rect.top + 5, 1))
+    document.dispatchEvent(pointer('pointermove', rect.left + 5, rect.top + 19, 1))
+    await flush()
+    document.dispatchEvent(pointer('pointermove', target.left + 20, target.top + 2 * 30 + 5, 1))
+    await flush()
+    document.dispatchEvent(pointer('pointerup', target.left + 20, target.top + 2 * 30 + 5, 0))
+    await flush(50)
+
+    expect(onEventMove).toHaveBeenCalledOnce()
+    const alice = document.querySelector('[data-column-id="monday-alice"]')!
+    expect(alice.querySelector('[data-testid="event-card-b1"]')).not.toBeNull()
+    expect(errorSpy).not.toHaveBeenCalled()
+    errorSpy.mockRestore()
+  })
+
   it('reports the clicked slot and its column', async () => {
     const onSlotClick = vi.fn()
     await render(
