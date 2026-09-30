@@ -31,6 +31,7 @@ interface CalendarLayoutProps {
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
+  theme?: 'light' | 'dark' | 'auto'
 }
 
 export const CalendarLayout = ({
@@ -45,6 +46,7 @@ export const CalendarLayout = ({
   children,
   className,
   style,
+  theme = 'light',
 }: CalendarLayoutProps) => {
   const timeSlots = React.useMemo(
     () => generateTimeSlots(timeRange.start, timeRange.end, timeRange.interval),
@@ -87,7 +89,11 @@ export const CalendarLayout = ({
   )
 
   return (
-    <div className={['rs-root', className].filter(Boolean).join(' ')} style={style}>
+    <div
+      className={['rs-root', className].filter(Boolean).join(' ')}
+      style={style}
+      data-rs-theme={theme}
+    >
       <ScrollableGrid
         contentRef={contentRef}
         verticalScrollRef={verticalScrollRef}

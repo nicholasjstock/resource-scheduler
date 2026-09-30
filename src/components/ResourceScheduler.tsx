@@ -43,6 +43,7 @@ interface CalendarContentProps<T extends CalendarEvent> {
   headerLeftContent?: React.ReactNode
   className?: string
   style?: React.CSSProperties
+  theme: 'light' | 'dark' | 'auto'
 }
 
 interface DragOverlayCardProps<T extends CalendarEvent> {
@@ -95,6 +96,7 @@ const CalendarContent = <T extends CalendarEvent>({
   headerLeftContent,
   className,
   style,
+  theme,
 }: CalendarContentProps<T>) => {
   const { activeEvent, handleDragStart, handleDragMove, handleDragEnd } = useDragContext<T>()
   const { setNodeRef: setGridRef } = useDroppable({
@@ -120,6 +122,7 @@ const CalendarContent = <T extends CalendarEvent>({
         headerLeftContent={headerLeftContent}
         className={className}
         style={style}
+        theme={theme}
       >
         <CalendarGrid
           columns={columns}
@@ -176,6 +179,7 @@ export const ResourceScheduler = <T, C = unknown>({
   accessors,
   className,
   style,
+  theme = 'light',
 }: ResourceSchedulerProps<T, C>) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const verticalScrollRef = useRef<HTMLDivElement>(null)
@@ -244,6 +248,7 @@ export const ResourceScheduler = <T, C = unknown>({
           headerLeftContent={corner}
           className={className}
           style={style}
+          theme={theme}
         />
       </DragProvider>
     </ColumnLookupContext.Provider>

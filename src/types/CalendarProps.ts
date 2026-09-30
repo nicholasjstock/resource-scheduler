@@ -107,6 +107,8 @@ interface ResourceSchedulerBaseProps<T, C> {
   renderColumnHeader?: RenderColumnHeader<T, C>
   /** Arrow keys scroll the grid while it has focus. Default true. */
   keyboardScroll?: boolean
+  /** Built-in palette: light (default), dark, or auto (follows prefers-color-scheme). */
+  theme?: 'light' | 'dark' | 'auto'
   /** Class for the root element (which carries the --rs-* theme variables). */
   className?: string
   /** Inline style for the root element, e.g. `{ '--rs-event-bg': '#0af' }`. */

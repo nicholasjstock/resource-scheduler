@@ -50,8 +50,10 @@ const room = (roomId: string): SchedulerColumn<Booking, { roomId: string }> => (
 - **Moves and resizes are optimistic**: return a promise from `onEventMove` /
   `onEventResize` and the event stays at its new position until it settles;
   reject to roll back.
-- **Theming**: set `--rs-*` custom properties (see `src/components/resource-scheduler.css`)
-  via `style`, `className` or any ancestor.
+- **Theming**: `theme="light"` (default), `"dark"` or `"auto"` (follows
+  `prefers-color-scheme`). Fine-tune with the `--rs-*` custom properties (see
+  `src/components/resource-scheduler.css`) via the `style` prop or a
+  `className` rule on the scheduler.
 - **Slots**: `corner` (top-left cell) and `renderColumnHeader(column, { depth, defaultContent })`.
 
 ## Development
