@@ -4,7 +4,7 @@ import { render } from 'vitest-browser-react'
 import { page } from 'vitest/browser'
 import { it } from 'vitest'
 import { ResourceScheduler } from '../src/index'
-import { demoColumns, demoShifts, demoWeekStart, ShiftCard } from '../demo/scene'
+import { BookingCard, demoBookings, demoColumns, demoWeekStart } from '../demo/scene'
 
 const weekStart = demoWeekStart(new Date(2024, 0, 1))
 
@@ -16,12 +16,12 @@ for (const theme of ['light', 'dark'] as const) {
         <ResourceScheduler
           theme={theme}
           columns={demoColumns(weekStart)}
-          events={demoShifts(weekStart)}
+          events={demoBookings(weekStart)}
           columnWidth={120}
           slotHeight={22}
           timeAxis={{ startHour: 8, endHour: 18, slotMinutes: 30 }}
           corner={<span style={{ fontSize: 12, fontWeight: 600 }}>Week 1</span>}
-          renderEvent={(shift, ctx) => <ShiftCard shift={shift} ctx={ctx} />}
+          renderEvent={(booking, ctx) => <BookingCard booking={booking} ctx={ctx} />}
         />
       </div>
     )
