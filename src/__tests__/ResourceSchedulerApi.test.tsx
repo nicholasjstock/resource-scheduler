@@ -85,10 +85,17 @@ describe('ResourceScheduler', () => {
     )
 
     const viewport = (await page.getByTestId('calendar-content-viewport').element()) as HTMLElement
+    // Let layout and the initial scroll-to-date settle first: scroll events during that
+    // programmatic scroll are ignored, and each new scroll restarts the 150ms debounce.
+    await vi.waitFor(() => expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth))
+    const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve))
+    await nextFrame()
+    await nextFrame()
+
     viewport.scrollLeft = 800
     viewport.dispatchEvent(new Event('scroll'))
 
-    await vi.waitFor(() => expect(onVisibleDateChange).toHaveBeenCalled())
+    await vi.waitFor(() => expect(onVisibleDateChange).toHaveBeenCalled(), { timeout: 3000 })
     expect(onVisibleDateChange.mock.calls.at(-1)![0]).toBeInstanceOf(Date)
   })
 })
