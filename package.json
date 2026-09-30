@@ -1,5 +1,5 @@
 {
-  "name": "@gembani/resource-scheduler",
+  "name": "@nicholasjstock/resource-scheduler",
   "version": "0.0.0",
   "private": true,
   "description": "React resource scheduler: a time grid with one column per resource, overlap layout, and drag to move, reassign and resize events.",
@@ -30,7 +30,8 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --browser.headless",
-    "test:watch": "vitest --browser.headless"
+    "test:watch": "vitest --browser.headless",
+    "screenshot": "vitest run --config vitest.screenshot.config.ts"
   },
   "peerDependencies": {
     "react": ">=18",

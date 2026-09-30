@@ -4,14 +4,18 @@ A React time grid with one column per resource (a person, room, machine…),
 events positioned by time, overlapping events laid out side by side, and drag
 and drop to move, reassign and resize them.
 
-> Status: extracted from simple-retail-planner, not yet published to npm (the
-> npm name is still open).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png">
+  <img alt="Resource scheduler: three days, each split into a column per person, with shifts placed by time, overlapping shifts side by side and a locked leave entry" src="docs/screenshot-light.png">
+</picture>
+
+> Status: extracted from simple-retail-planner; not yet published to npm.
 
 ## Usage
 
 ```tsx
-import { ResourceScheduler, type SchedulerColumn } from '@gembani/resource-scheduler'
-import '@gembani/resource-scheduler/style.css'
+import { ResourceScheduler, type SchedulerColumn } from '@nicholasjstock/resource-scheduler'
+import '@nicholasjstock/resource-scheduler/style.css'
 
 type Booking = { id: string; start: Date; end: Date; roomId: string; title: string }
 
@@ -63,6 +67,7 @@ npm install
 npm test          # Vitest browser mode (Playwright/Chromium)
 npm run typecheck
 npm run build     # tsup → dist/ (ESM + .d.ts + index.css)
+npm run screenshot  # regenerate docs/screenshot-{light,dark}.png (scripts/readme-screenshot.test.tsx)
 ```
 
 ## Licence
