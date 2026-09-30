@@ -1,0 +1,370 @@
+/*
+ * Resource scheduler styles. Everything themeable is a --rs-* custom property;
+ * set them on the scheduler (via `style`/`className`) or any ancestor.
+ * Defaults are a dark palette.
+ */
+.rs-root {
+  --rs-bg: #16181f;
+  --rs-bg-alt: #101218;
+  --rs-header-bg: rgba(22, 24, 31, 0.92);
+  --rs-text: #f4f2ec;
+  --rs-divider: #3d4458;
+  --rs-header-border: #3d4458;
+  --rs-grid-line: #23272f;
+  --rs-grid-line-medium: #2e323d;
+  --rs-grid-line-strong: #3d4458;
+  --rs-slot-line: #1e222b;
+  --rs-time-column-border: #262a34;
+  --rs-time-text: #565c68;
+  --rs-time-font: 'IBM Plex Mono', monospace;
+  --rs-header-font-size: clamp(12px, 1.5vw, 16px);
+  --rs-event-bg: #4f7bff;
+  --rs-event-fg: #ffffff;
+  --rs-event-border: rgba(255, 255, 255, 0.12);
+  --rs-event-locked-bg: #1e222b;
+  --rs-event-locked-fg: #f4f2ec;
+  --rs-event-locked-border: #3a3f4b;
+  --rs-event-radius: 6px;
+  --rs-event-hover-shadow: 0 8px 18px rgba(16, 42, 67, 0.18);
+  --rs-event-overlay-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  --rs-slot-hover: rgba(79, 123, 255, 0.04);
+  --rs-drop-bg: rgba(79, 123, 255, 0.1);
+  --rs-drop-border: rgba(79, 123, 255, 0.5);
+  --rs-origin-bg: rgba(229, 72, 77, 0.08);
+  --rs-origin-border: rgba(229, 72, 77, 0.5);
+  --rs-scrollbar-track: rgba(148, 163, 184, 0.24);
+  --rs-scrollbar-thumb: rgba(15, 23, 42, 0.42);
+  --rs-scrollbar-track-vertical: rgba(148, 163, 184, 0.18);
+  --rs-scrollbar-thumb-vertical: rgba(15, 23, 42, 0.28);
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: var(--rs-text);
+}
+
+.rs-root,
+.rs-root [class^='rs-'],
+.rs-root [class*=' rs-'] {
+  box-sizing: border-box;
+}
+
+/* Scroll frame: sticky header row, synced horizontal scroll, custom scrollbar */
+.rs-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--rs-bg);
+  min-height: 0;
+}
+
+.rs-frame-header {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 0;
+  border-bottom: 1px solid var(--rs-divider);
+}
+
+.rs-corner {
+  flex-shrink: 0;
+  border-right: 1px solid var(--rs-divider);
+  background-color: var(--rs-header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.rs-frame-header-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--rs-header-bg);
+}
+
+.rs-frame-header-inner,
+.rs-frame-content-inner {
+  min-width: 100%;
+  width: max-content;
+}
+
+.rs-frame-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.rs-frame-body:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.rs-frame-body::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.rs-frame-body::-webkit-scrollbar-thumb:vertical {
+  background-color: var(--rs-scrollbar-thumb-vertical);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.rs-frame-body::-webkit-scrollbar-track:vertical {
+  background-color: var(--rs-scrollbar-track-vertical);
+}
+
+.rs-frame-row {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.rs-frame-left {
+  flex-shrink: 0;
+  border-right: 1px solid var(--rs-divider);
+  background-color: var(--rs-bg);
+}
+
+.rs-frame-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.rs-frame-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 0;
+  scrollbar-width: none;
+}
+
+.rs-frame-viewport::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+.rs-hscroll {
+  flex-shrink: 0;
+  border-top: 1px solid var(--rs-divider);
+  background-color: var(--rs-bg);
+  padding: 6px 8px;
+}
+
+.rs-hscroll-track {
+  position: relative;
+  height: 12px;
+  width: 100%;
+  border-radius: 999px;
+  background-color: var(--rs-scrollbar-track);
+  cursor: pointer;
+}
+
+.rs-hscroll-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--rs-scrollbar-thumb);
+  cursor: grab;
+}
+
+/* Column headers */
+.rs-header {
+  display: flex;
+  border-bottom: 3px solid var(--rs-header-border);
+  background-color: var(--rs-header-bg);
+}
+
+.rs-header-empty {
+  width: 60px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--rs-time-column-border);
+  background-color: var(--rs-header-bg);
+}
+
+.rs-header-cell {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.rs-header-cell-children {
+  display: flex;
+}
+
+.rs-header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.rs-header-title-text {
+  margin: 0;
+  padding: 4px;
+  width: 100%;
+  font-size: var(--rs-header-font-size);
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Time labels */
+.rs-time-column {
+  width: 56px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--rs-time-column-border);
+  background-color: var(--rs-bg-alt);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.rs-time-label {
+  border-bottom: 1px solid var(--rs-slot-line);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 8px;
+  font-family: var(--rs-time-font);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--rs-time-text);
+}
+
+/* Grid */
+.rs-body {
+  display: flex;
+  position: relative;
+  background-color: var(--rs-bg);
+  flex: 1;
+}
+
+.rs-grid-row {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: max-content;
+}
+
+.rs-leaf {
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-column {
+  position: relative;
+  width: 100%;
+  background-color: var(--rs-bg);
+}
+
+.rs-slot-layer,
+.rs-event-layer,
+.rs-collision-group {
+  position: absolute;
+  inset: 0;
+}
+
+.rs-slot-layer {
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.rs-event-layer {
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rs-event-layer > *,
+.rs-collision-group {
+  pointer-events: auto;
+}
+
+.rs-collision-group {
+  width: 100%;
+  height: 100%;
+}
+
+.rs-slot {
+  border-bottom: 1px solid var(--rs-slot-line);
+  cursor: pointer;
+  position: relative;
+}
+
+.rs-slot:hover {
+  background-color: var(--rs-slot-hover);
+}
+
+.rs-slot--drop-target::after,
+.rs-slot--drag-origin::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.rs-slot--drop-target::after {
+  height: var(--rs-drop-height);
+  background-color: var(--rs-drop-bg);
+  border: 2px dashed var(--rs-drop-border);
+}
+
+.rs-slot--drag-origin::before {
+  height: var(--rs-origin-height);
+  background-color: var(--rs-origin-bg);
+  border: 2px dashed var(--rs-origin-border);
+}
+
+/* Events */
+.rs-event {
+  position: absolute;
+  background-color: var(--rs-event-bg);
+  color: var(--rs-event-fg);
+  border: 1px solid var(--rs-event-border);
+  border-radius: var(--rs-event-radius);
+  cursor: default;
+  z-index: 1;
+  transition: none;
+}
+
+.rs-event--locked {
+  background-color: var(--rs-event-locked-bg);
+  color: var(--rs-event-locked-fg);
+  border-color: var(--rs-event-locked-border);
+}
+
+.rs-event--interactive {
+  cursor: move;
+}
+
+.rs-event--interactive:hover {
+  box-shadow: var(--rs-event-hover-shadow);
+}
+
+.rs-event--overlay {
+  cursor: grabbing;
+  opacity: 0.92;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: var(--rs-event-overlay-shadow);
+}
+
+.rs-event--dragging-source {
+  opacity: 0;
+}

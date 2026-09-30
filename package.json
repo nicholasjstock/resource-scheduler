@@ -1,0 +1,58 @@
+{
+  "name": "@gembani/resource-scheduler",
+  "version": "0.0.0",
+  "private": true,
+  "description": "React resource scheduler: a time grid with one column per resource, overlap layout, and drag to move, reassign and resize events.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicholasjstock/resource-scheduler.git"
+  },
+  "homepage": "https://github.com/nicholasjstock/resource-scheduler#readme",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/index.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --browser.headless",
+    "test:watch": "vitest --browser.headless"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/utilities": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/browser": "^4.1.2",
+    "@vitest/browser-playwright": "^4.1.2",
+    "playwright": "^1.61.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tsup": "^8.5.0",
+    "typescript": "5.9.3",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2",
+    "vitest-browser-react": "^2.1.0"
+  }
+}
